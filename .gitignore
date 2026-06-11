@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+models/*.pkl
+models/*.joblib
+
+venv/
+.env
+
+test_imports.py
