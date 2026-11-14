@@ -17,22 +17,24 @@ def train_model(X, y, preprocessor):
         random_state=42
     )
 
-    # Previously selected best Extra Trees parameters
+    # Memory-conscious Extra Trees configuration
     model = Pipeline([
         ("preprocessor", clone(preprocessor)),
 
         ("regressor", ExtraTreesRegressor(
-            n_estimators=700,
+            n_estimators=300,
             max_depth=None,
             min_samples_split=2,
             min_samples_leaf=1,
             max_features="sqrt",
             random_state=42,
-            n_jobs=-1
+            n_jobs=1
         ))
     ])
 
     print("\nTraining Extra Trees model...")
+    print("Number of trees: 300")
+    print("Parallel jobs: 1")
     print("Please wait...")
 
     # Train model
