@@ -23,7 +23,9 @@ st.set_page_config(
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-API_URL = "http://127.0.0.1:8000/predict"
+
+# LIVE RENDER FASTAPI URL
+API_URL = "https://house-price-prediction-api-2q84.onrender.com/predict"
 
 # ==========================================
 # CUSTOM CSS
@@ -259,7 +261,7 @@ with tab1:
                 response = requests.post(
                     API_URL,
                     json=input_data,
-                    timeout=30
+                    timeout=60
                 )
 
             response.raise_for_status()
@@ -276,6 +278,7 @@ with tab1:
 
             if prediction is None:
                 st.error("Prediction value not found in API response.")
+
             else:
 
                 st.session_state["latest_prediction"] = float(prediction)
@@ -286,9 +289,25 @@ with tab1:
         except requests.exceptions.ConnectionError:
 
             st.error(
-                "Cannot connect to FastAPI. Start it using "
-                "'uvicorn api.app:app --reload'."
+                "Cannot connect to the live prediction API. "
+                "Please check whether the Render service is running."
             )
+
+        except requests.exceptions.Timeout:
+
+            st.error(
+                "The prediction API took too long to respond. "
+                "Please try again."
+            )
+
+        except requests.exceptions.HTTPError as e:
+
+            st.error(f"API returned an error: {e}")
+
+            try:
+                st.json(response.json())
+            except ValueError:
+                st.write(response.text)
 
         except requests.exceptions.RequestException as e:
 
