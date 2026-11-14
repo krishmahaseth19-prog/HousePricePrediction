@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 from sklearn.compose import ColumnTransformer
@@ -7,35 +8,40 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 def load_data(path):
-
     df = pd.read_csv(path)
-
     return df
 
 
 def preprocess_data(df):
 
+    df = df.copy()
+
+    # Extract date features
     df["date"] = pd.to_datetime(df["date"])
 
     df["year"] = df["date"].dt.year
     df["month"] = df["date"].dt.month
 
-    df.drop("date", axis=1, inplace=True)
-    df.drop("street", axis=1, inplace=True)
+    # Remove unnecessary columns
+    df.drop(
+        columns=["date", "street"],
+        inplace=True,
+        errors="ignore"
+    )
 
-    # Remove outliers from price
+    # Remove price outliers using IQR
     Q1 = df["price"].quantile(0.25)
     Q3 = df["price"].quantile(0.75)
 
     IQR = Q3 - Q1
 
-    lower = Q1 - 1.5 * IQR
-    upper = Q3 + 1.5 * IQR
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
 
     df = df[
-        (df["price"] >= lower) &
-        (df["price"] <= upper)
-    ]
+        (df["price"] >= lower_bound) &
+        (df["price"] <= upper_bound)
+    ].copy()
 
     return df
 
@@ -44,11 +50,11 @@ def create_preprocessor(X):
 
     numeric_features = X.select_dtypes(
         include=["int64", "float64"]
-    ).columns
+    ).columns.tolist()
 
     categorical_features = X.select_dtypes(
         include=["object"]
-    ).columns
+    ).columns.tolist()
 
     numeric_transformer = Pipeline([
         ("imputer", SimpleImputer(strategy="median"))
@@ -56,7 +62,9 @@ def create_preprocessor(X):
 
     categorical_transformer = Pipeline([
         ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("encoder", OneHotEncoder(handle_unknown="ignore"))
+        ("encoder", OneHotEncoder(
+            handle_unknown="ignore"
+        ))
     ])
 
     preprocessor = ColumnTransformer([

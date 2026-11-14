@@ -1,3 +1,4 @@
+
 from src.preprocess import (
     load_data,
     preprocess_data,
@@ -5,7 +6,6 @@ from src.preprocess import (
 )
 
 from src.train import train_model
-
 from src.evaluate import evaluate_model
 
 from src.save_model import (
@@ -14,35 +14,50 @@ from src.save_model import (
 )
 
 
-# Load data
+print("\nHOUSE PRICE PREDICTION PROJECT")
+print("================================")
+
+# 1. Load dataset
+print("\nLoading dataset...")
+
 df = load_data("data/data.csv")
 
-# Preprocess data
+# 2. Preprocess dataset
+print("Preprocessing dataset...")
+
 df = preprocess_data(df)
 
-# Features and target
+# 3. Separate features and target
 X = df.drop("price", axis=1)
-
 y = df["price"]
 
-# Create transformer
+# 4. Create preprocessing pipeline
 preprocessor = create_preprocessor(X)
 
-# Train model
+# 5. Compare and train models
+print("\nTraining models...")
+
 model, X_test, y_test = train_model(
     X,
     y,
     preprocessor
 )
 
-# Evaluate model
+# 6. Display selected model
+print("\nSELECTED MODEL:")
+print(model.named_steps["regressor"])
+
+# 7. Evaluate selected model on untouched test data
 evaluate_model(
     model,
     X_test,
     y_test
 )
 
-# Save model
+# 8. Save final model
 save_pickle(model)
-
 save_joblib(model)
+
+print("\n================================")
+print("PROJECT EXECUTION COMPLETED")
+print("================================")
