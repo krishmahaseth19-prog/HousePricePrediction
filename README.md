@@ -1,8 +1,7 @@
-# House Price Prediction
+# 🏠 House Price Prediction
 
 <p align="center">
-  <strong>Machine Learning-Based House Price Prediction System</strong>
-  <br/>
+  <strong>Machine Learning-Based House Price Prediction System</strong><br/>
   An end-to-end machine learning application with an interactive dashboard and REST API.
 </p>
 
@@ -19,11 +18,19 @@
 
 House Price Prediction is an end-to-end machine learning project designed to estimate residential property prices based on relevant property characteristics.
 
-The system uses an **Extra Trees Regressor** to generate price predictions. It combines data preprocessing, model training, performance evaluation, and deployment through FastAPI and Streamlit.
+The system uses an **Extra Trees Regressor** to generate price predictions. It combines data preprocessing, model training, performance evaluation, and cloud deployment through FastAPI and Streamlit.
 
-The application provides an interactive interface where users can enter property details and obtain estimated house prices.
+Users can enter property details through an interactive dashboard and receive estimated house prices.
 
-## 2. Key Features
+## 2. Live Application
+
+- **Streamlit Dashboard:** https://house-price-prediction-krishma.streamlit.app/
+- **FastAPI Backend:** https://house-price-prediction-api-2q84.onrender.com/
+- **API Documentation:** https://house-price-prediction-api-2q84.onrender.com/docs
+- **GitHub Repository:** https://github.com/krishmahaseth19-prog/HousePricePrediction
+- **Hugging Face Model:** https://huggingface.co/Krishmahaseth/house-price-prediction-model
+
+## 3. Key Features
 
 - **Machine Learning:** House price prediction using Extra Trees Regressor.
 - **Data Preprocessing:** Data cleaning, feature engineering, and missing-value handling.
@@ -32,8 +39,10 @@ The application provides an interactive interface where users can enter property
 - **Interactive Dashboard:** User-friendly prediction interface built with Streamlit.
 - **Data Visualization:** Interactive charts for exploring model performance and prediction results.
 - **Model Persistence:** Saving trained models using Pickle and Joblib.
+- **Cloud Deployment:** Streamlit frontend and FastAPI backend deployed online.
+- **Model Hosting:** Trained model hosted on Hugging Face Hub.
 
-## 3. Technology Stack
+## 4. Technology Stack
 
 | Category | Technologies |
 |---|---|
@@ -45,9 +54,11 @@ The application provides an interactive interface where users can enter property
 | Dashboard | Streamlit |
 | Visualization | Plotly, Matplotlib |
 | Model Serialization | Pickle, Joblib |
-| Development Environment | VS Code, Git, GitHub |
+| Model Hosting | Hugging Face Hub |
+| Deployment | Render, Streamlit Community Cloud |
+| Development Tools | VS Code, Git, GitHub |
 
-## 4. Project Architecture
+## 5. Project Architecture
 
 ```text
 HousePricePrediction/
@@ -61,10 +72,10 @@ HousePricePrediction/
 │   └── data.csv
 │
 ├── models/
-│   └── (Generated model files)
+│   └── Generated model files
 │
 ├── outputs/
-│   └── (Generated evaluation visualizations)
+│   └── Generated evaluation visualizations
 │
 ├── src/
 │   ├── evaluate.py
@@ -74,32 +85,34 @@ HousePricePrediction/
 │   └── train.py
 │
 ├── main.py
+├── prediction_errors.csv
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
 
-## 5. Model Performance
+## 6. Model Performance
 
-The project uses an **Extra Trees Regressor** configured with 700 estimators.
-
-The following results represent the current baseline model evaluation:
+The current local evaluation uses an **Extra Trees Regressor with 300 estimators**.
 
 | Evaluation Metric | Result |
 |---|---:|
-| Mean Absolute Error (MAE) | 77,440.97 |
-| Mean Squared Error (MSE) | 14,442,493,078.53 |
-| Root Mean Squared Error (RMSE) | 120,176.92 |
-| R² Score | 0.7085 |
+| Mean Absolute Error (MAE) | 77,106.38 |
+| Mean Squared Error (MSE) | 14,300,417,704.77 |
+| Root Mean Squared Error (RMSE) | 119,584.35 |
+| R² Score | 0.7114 |
 
-**Model Configuration:**
+### Model Configuration
+
 - Algorithm: Extra Trees Regressor
-- Number of Estimators: 700
+- Number of Estimators: 300
 - Maximum Features: `sqrt`
 - Random State: 42
-- Parallel Processing: Enabled (`n_jobs=-1`)
+- Parallel Processing: `n_jobs=1`
 
-## 6. Installation and Setup
+The R² score of 0.7114 indicates that the model explains approximately 71.14% of the variance in the evaluation dataset.
+
+## 7. Installation and Setup
 
 Follow these steps to run the project locally.
 
@@ -135,9 +148,9 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## 7. Model Training
+## 8. Model Training
 
-The trained model files are not included in the GitHub repository because of their size.
+The trained model files are not stored in the GitHub repository because of their size.
 
 Generate the models locally by executing:
 
@@ -145,19 +158,18 @@ Generate the models locally by executing:
 python main.py
 ```
 
-This runs the project pipeline, including:
+This runs the project pipeline:
 
 1. Loading the dataset.
 2. Data preprocessing and feature engineering.
 3. Model training.
 4. Model evaluation.
 5. Saving the trained model files.
+6. Generating evaluation results and visualizations.
 
-Ensure that model generation completes successfully before starting the API.
+## 9. Running the Application Locally
 
-## 8. Running the Application
-
-The project uses FastAPI as the backend and Streamlit as the frontend.
+The application uses FastAPI as the backend and Streamlit as the frontend.
 
 ### Start the FastAPI server
 
@@ -167,7 +179,7 @@ uvicorn api.app:app --reload
 
 API documentation:
 
-[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+http://127.0.0.1:8000/docs
 
 ### Start the Streamlit dashboard
 
@@ -179,46 +191,49 @@ streamlit run src/streamlit_app.py
 
 Open the dashboard:
 
-[http://localhost:8501](http://localhost:8501)
+http://localhost:8501
 
-## 9. Model Evaluation and Visualization
+## 10. Model Evaluation and Visualization
 
-The evaluation pipeline generates visualizations to help analyze model performance.
+The evaluation dashboard provides:
 
-The project includes:
-
-- Actual vs. Predicted Price Plot
-- Residual Plot
 - Prediction Error Distribution
+- Residual Error Plot
+- Actual vs. Predicted Prices
+- Model Evaluation Metrics
+- Prediction Error Details
 
-These visualizations help assess prediction accuracy, error distribution, and model behavior.
+These visualizations help analyze prediction accuracy, error distribution, and model behavior.
 
-## 10. Repository Notes
+## 11. Deployment Architecture
 
-- The dataset is located in the `data/` directory.
-- Trained `.pkl` and `.joblib` files are excluded from GitHub because they exceed GitHub's individual file size limit.
-- Run `python main.py` to generate the trained models locally.
-- Generated evaluation outputs are excluded from version control.
+The project uses a cloud-based deployment architecture:
 
-## 11. Future Improvements
+- **Frontend:** Streamlit Community Cloud
+- **Backend:** FastAPI hosted on Render
+- **Model Hosting:** Hugging Face Hub
+- **Source Code:** GitHub
+
+The Streamlit dashboard sends property information to the FastAPI prediction endpoint. The backend loads the trained model hosted on Hugging Face Hub and returns the predicted house price.
+
+## 12. Future Improvements
 
 - Experiment with additional regression algorithms.
 - Perform hyperparameter optimization.
 - Improve prediction accuracy through feature engineering.
 - Add model comparison and selection.
 - Enhance dashboard functionality and user experience.
-- Deploy the application to a cloud platform.
+- Add additional property-related features.
 
-## 12. Author
+## 13. Author
 
 **Krishma Mahaseth**
 
-GitHub: [krishmahaseth19-prog](https://github.com/krishmahaseth19-prog)
+GitHub: https://github.com/krishmahaseth19-prog
 
 ---
 
 <p align="center">
-  <strong>House Price Prediction</strong>
-  <br/>
+  <strong>House Price Prediction</strong><br/>
   Built with Python, Machine Learning, FastAPI, and Streamlit.
 </p>
