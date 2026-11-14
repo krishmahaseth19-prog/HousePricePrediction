@@ -227,7 +227,7 @@ The Streamlit dashboard sends property information to the FastAPI prediction end
 
 ## 13. Author
 
-**Krishma Mahaseth**
+**Krish Mahaseth**
 
 GitHub: https://github.com/krishmahaseth19-prog
 
